@@ -1,4 +1,3 @@
-```
 # Todo List
 
 A simple and intuitive web application for managing your daily tasks. This Todo list allows you to easily add, edit, and delete tasks, mark tasks as completed, and filter tasks based on their completion status. Built using HTML, CSS, and JavaScript, this project demonstrates fundamental web development concepts and provides a practical solution for organizing your tasks efficiently.
@@ -16,7 +15,5 @@ A simple and intuitive web application for managing your daily tasks. This Todo 
 - CSS
 - JavaScript
 
-
 ## Demo:
 [Live Demo](https://muhammadharis-todo-list.netlify.app/)
-```
