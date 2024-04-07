@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo List</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="logo.png" />
+  </head>
+  <body>
+    <div class="container">
+      <h1><img src="logo.png" alt="Logo" class="logo" /> Todo List</h1>
+      <!-- Add image here -->
+      <div class="input-wrapper">
+        <input type="text" id="taskInput" placeholder="Enter task" />
+        <button onclick="addTask()">Add Task</button>
+        <select id="filterDropdown" onchange="filterTasks()">
+          <option value="all">All</option>
+          <option value="completed">Completed</option>
+          <option value="pending">Pending</option>
+        </select>
+      </div>
+      <ul id="taskList"></ul>
+      <button id="deleteCompletedButton">Delete Completed Tasks</button>
+      <!-- Add this button -->
+    </div>
+    <script src="script.js"></script>
+  </body>
+</html>
