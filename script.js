@@ -1,13 +1,13 @@
 let tasks = [];
-
-loadTasks();
-filterTasks();
+let currentFilter = "all";
 
 const deleteCompletedButton = document.getElementById("deleteCompletedButton");
+deleteCompletedButton.disabled = true;
+
 deleteCompletedButton.addEventListener("click", function () {
   tasks = tasks.filter((task) => !task.completed);
-  saveTasks();
-  filterTasks();
+  filterTasks(currentFilter);
+  updateDeleteButtonState();
 });
 
 function addTask() {
@@ -16,9 +16,9 @@ function addTask() {
 
   if (taskText !== "") {
     tasks.push({ text: taskText, completed: false, visible: true });
-    saveTasks();
-    filterTasks();
+    filterTasks(currentFilter);
     taskInput.value = "";
+    updateDeleteButtonState();
   }
 }
 
@@ -38,11 +38,12 @@ function renderTasks() {
     if (!task.visible) return;
 
     const li = document.createElement("li");
-
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = task.completed;
-    checkbox.addEventListener("change", () => toggleCompleted(index));
+    checkbox.addEventListener("change", () => {
+      toggleCompleted(index);
+    });
 
     const taskText = document.createElement("span");
     taskText.textContent = task.text;
@@ -70,14 +71,14 @@ function renderTasks() {
 
 function deleteTask(index) {
   tasks.splice(index, 1);
-  saveTasks();
-  filterTasks();
+  filterTasks(currentFilter);
+  updateDeleteButtonState();
 }
 
 function toggleCompleted(index) {
   tasks[index].completed = !tasks[index].completed;
-  saveTasks();
-  filterTasks();
+  filterTasks(currentFilter);
+  updateDeleteButtonState();
 }
 
 function enableEditMode(taskTextElement, currentTaskText) {
@@ -91,8 +92,7 @@ function enableEditMode(taskTextElement, currentTaskText) {
     if (newText !== "") {
       const index = tasks.findIndex((task) => task.text === currentTaskText);
       tasks[index].text = newText;
-      saveTasks();
-      filterTasks();
+      filterTasks(currentFilter);
     }
   };
 
@@ -107,27 +107,44 @@ function enableEditMode(taskTextElement, currentTaskText) {
   input.focus();
 }
 
-function filterTasks() {
-  const filter = document.getElementById("filterDropdown").value;
+function filterTasks(filter = "all") {
+  currentFilter = filter;
   tasks.forEach((task) => {
-    if (filter === "all") {
-      task.visible = true;
-    } else if (filter === "completed") {
-      task.visible = task.completed;
-    } else if (filter === "pending") {
-      task.visible = !task.completed;
-    }
+    task.visible =
+      filter === "all" ||
+      (filter === "completed" && task.completed) ||
+      (filter === "pending" && !task.completed);
   });
   renderTasks();
+  updateActiveTab();
 }
 
-function saveTasks() {
-  localStorage.setItem("tasks", JSON.stringify(tasks));
+function updateDeleteButtonState() {
+  const hasCompletedTasks = tasks.some((task) => task.completed);
+  deleteCompletedButton.disabled = !hasCompletedTasks;
 }
 
-function loadTasks() {
-  const storedTasks = localStorage.getItem("tasks");
-  if (storedTasks) {
-    tasks = JSON.parse(storedTasks);
-  }
+function updateActiveTab() {
+  const tabs = document.querySelectorAll(".tab");
+  tabs.forEach((tab) => {
+    if (tab.id === `${currentFilter}Tab`) {
+      tab.classList.add("active");
+    } else {
+      tab.classList.remove("active");
+    }
+  });
 }
+
+const themeSwitch = document.getElementById("theme-switch");
+
+themeSwitch.addEventListener("change", function () {
+  document.body.classList.toggle("dark");
+  document.querySelector(".container").classList.toggle("dark");
+  document
+    .querySelectorAll(
+      "h1, input[type='text'], button, hr, ul, li, .delete-btn, .edit-btn, .tab"
+    )
+    .forEach((element) => element.classList.toggle("dark"));
+});
+
+filterTasks(currentFilter);

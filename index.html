@@ -5,22 +5,46 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Todo List</title>
     <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+    />
     <link rel="icon" href="logo.png" />
   </head>
   <body>
     <div class="container">
-      <h1><img src="logo.png" alt="Logo" class="logo" /> Todo List</h1>
+      <h1>
+        <img src="logo.png" alt="Logo" class="logo" height="35px" /> Todo List
+      </h1>
       <div class="input-wrapper">
         <input type="text" id="taskInput" placeholder="Enter task" />
-        <button onclick="addTask()">Add Task</button>
-        <select id="filterDropdown" onchange="filterTasks()">
-          <option value="all">All</option>
-          <option value="completed">Completed</option>
-          <option value="pending">Pending</option>
-        </select>
+        <div class="button-wrapper">
+          <button onclick="addTask()" title="Add new task">
+            <i class="fas fa-plus"></i>
+          </button>
+          <button
+            id="deleteCompletedButton"
+            disabled
+            title="Delete all completed tasks"
+          >
+            <i class="fas fa-trash-alt"></i>
+          </button>
+          <div class="theme-toggle">
+            <input type="checkbox" id="theme-switch" />
+          </div>
+        </div>
       </div>
+      <div class="tab-wrapper">
+        <div id="allTab" class="tab" onclick="filterTasks('all')">All</div>
+        <div id="completedTab" class="tab" onclick="filterTasks('completed')">
+          Completed
+        </div>
+        <div id="pendingTab" class="tab" onclick="filterTasks('pending')">
+          Pending
+        </div>
+      </div>
+      <hr />
       <ul id="taskList"></ul>
-      <button id="deleteCompletedButton">Delete Completed Tasks</button>
     </div>
     <script src="script.js"></script>
   </body>
